@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:waste_management/screens/loginpage.dart';
@@ -50,10 +51,13 @@ class _SettingsPageState extends State<SettingsPage> {
               Card(
                 child: ListTile(
                   onTap: () {
-                    // LocalNofications.showSimpleNotification(
-                    //     title: 'Simple Notification',
-                    //     body: 'This is a simple Notification',
-                    //     payload: 'This is simple data');
+                    AwesomeNotifications().createNotification(
+                        content: NotificationContent(
+                            id: 1,
+                            channelKey: "basic_channel",
+                            title: "Hello World",
+                            body:
+                                "Hey you out there, my notification is working now "));
                   },
                   title: const Text('Notifications'),
                   leading: const Icon(Icons.notifications_rounded),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:waste_management/itemcard.dart';
+import 'package:waste_management/services/itemcard.dart';
 import 'package:waste_management/services/additem.dart';
 
 class StorePage extends StatefulWidget {

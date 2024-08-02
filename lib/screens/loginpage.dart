@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:waste_management/pages/homepage.dart';
 import 'package:waste_management/screens/resetpassword.dart';
@@ -33,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
+          padding: const EdgeInsets.all(10),
           margin: const EdgeInsets.only(top: 90, left: 15, right: 15),
           child: Form(
             key: _formKey,
@@ -101,10 +101,10 @@ class _LoginPageState extends State<LoginPage> {
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: const InputDecoration(
+        border: OutlineInputBorder(),
         labelText: 'Enter your email',
+        hintText: 'codedan@gmail.com',
         prefixIcon: Icon(Icons.email_outlined),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -122,6 +122,7 @@ class _LoginPageState extends State<LoginPage> {
       controller: _passwordController,
       obscureText: _obscureText,
       decoration: InputDecoration(
+        border: const OutlineInputBorder(),
         labelText: 'Enter your password',
         prefixIcon: const Icon(Icons.lock_outline),
         suffixIcon: IconButton(
@@ -134,10 +135,6 @@ class _LoginPageState extends State<LoginPage> {
             });
           },
         ),
-        focusedBorder:
-            const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        enabledBorder:
-            const OutlineInputBorder(borderRadius: BorderRadius.zero),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -170,21 +167,22 @@ class _LoginPageState extends State<LoginPage> {
       const SnackBar(content: Text('Logging in...')),
     );
 
-    User? user = await _auth.signInEmailPassword(
-        email: _emailController.text, password: _passwordController.text);
+    SignResult? result = await _auth.signInEmailPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
 
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-    if (user != null) {
+    if (result?.user != null) {
       print("User is successfully logged in");
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } else {
-      print('Error logging in');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error logging in, please try again.')),
+        SnackBar(content: Text('Error: ${result?.errorMessage}')),
       );
     }
   }

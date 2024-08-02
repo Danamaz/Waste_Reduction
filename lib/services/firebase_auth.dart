@@ -4,7 +4,7 @@ import 'package:waste_management/services/database.dart';
 class FirebaseAuthService {
   final _auth = FirebaseAuth.instance;
 
-  Future<User?> signUpEmailPassword({
+  Future<SignResult?> signUpEmailPassword({
     required String email,
     required String password,
     required String name,
@@ -18,14 +18,14 @@ class FirebaseAuthService {
         email: email,
         phone: phone,
       );
-      return credential.user;
-    } catch (e) {
-      print('Error in signUpEmailPassword: $e');
-      return null;
+      return SignResult(user: credential.user);
+    } on FirebaseAuthException catch (e) {
+      print('Error in signUpEmailPassword: ${e.message}');
+      return SignResult(errorMessage: e.message);
     }
   }
 
-  Future<User?> signInEmailPassword({
+  Future signInEmailPassword({
     required String email,
     required String password,
   }) async {
@@ -34,10 +34,17 @@ class FirebaseAuthService {
         email: email,
         password: password,
       );
-      return credential.user;
-    } catch (e) {
-      print('Error in signInEmailPassword: ${e.toString()}');
-      return null;
+      return SignResult(user: credential.user);
+    } on FirebaseAuthException catch (e) {
+      print('Error in signUpEmailPassword: ${e.message}');
+      return SignResult(errorMessage: e.message);
     }
   }
+}
+
+class SignResult {
+  final User? user;
+  final String? errorMessage;
+
+  SignResult({this.user, this.errorMessage});
 }

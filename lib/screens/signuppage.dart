@@ -1,5 +1,4 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:waste_management/pages/homepage.dart';
 import 'package:waste_management/screens/loginpage.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +39,7 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
+          padding: const EdgeInsets.all(10),
           margin: const EdgeInsets.only(top: 70, left: 15, right: 15),
           child: Form(
             key: _formKey,
@@ -111,10 +111,9 @@ class _SignupPageState extends State<SignupPage> {
       controller: _nameController,
       keyboardType: TextInputType.name,
       decoration: const InputDecoration(
-        hintText: 'Enter your name',
+        border: OutlineInputBorder(),
+        labelText: 'Enter your name',
         prefixIcon: Icon(Icons.person_outline),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -130,10 +129,9 @@ class _SignupPageState extends State<SignupPage> {
       controller: _phoneController,
       keyboardType: TextInputType.phone,
       decoration: const InputDecoration(
-        hintText: 'Enter your phone number',
+        border: OutlineInputBorder(),
+        labelText: 'Enter your phone number',
         prefixIcon: Icon(Icons.phone),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -151,10 +149,10 @@ class _SignupPageState extends State<SignupPage> {
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: const InputDecoration(
-        hintText: 'Enter your email',
+        border: OutlineInputBorder(),
+        hintText: 'codedan@gmail.com',
+        labelText: 'Enter your email',
         prefixIcon: Icon(Icons.email_outlined),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -172,7 +170,8 @@ class _SignupPageState extends State<SignupPage> {
       controller: _passwordController,
       obscureText: _obscureText,
       decoration: InputDecoration(
-        hintText: 'Enter your password',
+        border: const OutlineInputBorder(),
+        labelText: 'Enter your password',
         prefixIcon: const Icon(Icons.lock_outlined),
         suffixIcon: IconButton(
           icon: Icon(
@@ -184,10 +183,6 @@ class _SignupPageState extends State<SignupPage> {
             });
           },
         ),
-        focusedBorder:
-            const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        enabledBorder:
-            const OutlineInputBorder(borderRadius: BorderRadius.zero),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -205,7 +200,8 @@ class _SignupPageState extends State<SignupPage> {
       controller: _confirmPasswordController,
       obscureText: _obscureText2,
       decoration: InputDecoration(
-        hintText: 'Confirm your password',
+        border: const OutlineInputBorder(),
+        labelText: 'Confirm your password',
         prefixIcon: const Icon(Icons.lock_outline),
         suffixIcon: IconButton(
           icon: Icon(
@@ -219,10 +215,6 @@ class _SignupPageState extends State<SignupPage> {
             });
           },
         ),
-        focusedBorder:
-            const OutlineInputBorder(borderRadius: BorderRadius.zero),
-        enabledBorder:
-            const OutlineInputBorder(borderRadius: BorderRadius.zero),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -254,30 +246,26 @@ class _SignupPageState extends State<SignupPage> {
       const SnackBar(content: Text('Signing Up...')),
     );
 
-    try {
-      User? user = await _auth.signUpEmailPassword(
-        phone: _phoneController.text,
-        email: _emailController.text,
-        password: _passwordController.text,
-        name: _nameController.text,
-      );
+    SignResult? result = await _auth.signUpEmailPassword(
+      phone: _phoneController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+      name: _nameController.text,
+    );
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-      if (user != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Sign up successful!')),
-        );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Error signing up. Please try again.')),
-        );
-      }
-    } catch (e) {
+    if (result?.user != null) {
+      print("User Acccount successfully Created");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
+        const SnackBar(content: Text('Account successful created!')),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${result?.errorMessage}')),
       );
     }
   }

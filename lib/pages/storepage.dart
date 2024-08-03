@@ -34,23 +34,21 @@ class _StorePageState extends State<StorePage> {
         backgroundColor: Colors.blue,
         toolbarHeight: 60,
       ),
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(height: 10),
-            const Text(
-              'Catalog',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w900,
-                fontFamily: 'RobotoCondensed-Italic',
-                color: Colors.black,
-                letterSpacing: 1,
-              ),
-            ),
+            // const Text(
+            //   'Catalog',
+            //   style: TextStyle(
+            //     fontSize: 30,
+            //     fontWeight: FontWeight.w900,
+            //     fontFamily: 'RobotoCondensed-Italic',
+            //     color: Colors.black,
+            //     letterSpacing: 1,
+            //   ),
+            // ),
             searchitem(),
             const SizedBox(height: 20),
             Expanded(

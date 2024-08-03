@@ -1,11 +1,13 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:waste_management/firebase_options.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:waste_management/firebase_options.dart';
 import 'package:waste_management/pages/homepage.dart';
 import 'package:waste_management/screens/loginpage.dart';
-import 'package:waste_management/services/notfication_controller.dart';
+import 'package:waste_management/services/notification_controller.dart';
+import 'package:waste_management/services/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,13 +19,13 @@ Future<void> main() async {
         channelKey: "basic_channel",
         channelName: "Basic Notification",
         channelDescription: "Basic notification channel",
-      )
+      ),
     ],
     channelGroups: [
       NotificationChannelGroup(
         channelGroupKey: "basic_channel_group",
         channelGroupName: "Basic Group",
-      )
+      ),
     ],
   );
   bool isAllowedToSendNotification =
@@ -36,7 +38,12 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -63,22 +70,23 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const HomePage();
-          } else {
-            return const LoginPage();
-          }
-        },
-      ),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: themeProvider.themeData,
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return const HomePage();
+              } else {
+                return const LoginPage();
+              }
+            },
+          ),
+        );
+      },
     );
   }
 }

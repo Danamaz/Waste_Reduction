@@ -1,9 +1,10 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:waste_management/screens/loginpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:waste_management/services/local_notifcation.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:waste_management/screens/loginpage.dart';
+import 'package:waste_management/services/theme.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -13,9 +14,9 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _isDarkMode = false;
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -66,15 +67,12 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               Card(
                 child: ListTile(
-                  onTap: () {},
                   title: const Text('Dark Mode'),
                   leading: const Icon(Icons.brightness_6),
                   trailing: Switch(
-                    value: _isDarkMode,
+                    value: themeProvider.isDarkMode,
                     onChanged: (value) {
-                      setState(() {
-                        _isDarkMode = value;
-                      });
+                      themeProvider.toggleTheme();
                     },
                   ),
                 ),
@@ -91,10 +89,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: ListTile(
                   onTap: () {
                     FirebaseAuth.instance.signOut();
-                    print("User has successfully logout");
+                    print("User has successfully logged out");
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content:
-                          Text("Successfully logged out, login in to continue"),
+                      content: Text(
+                          "You have successfully logged out, log in to continue"),
                     ));
                     Navigator.push(
                       context,
@@ -115,7 +113,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 }
 
-//Account Information
 class AccountInfo extends StatefulWidget {
   const AccountInfo({super.key});
 
@@ -126,8 +123,8 @@ class AccountInfo extends StatefulWidget {
 class _AccountInfoState extends State<AccountInfo> {
   String _name = '';
   String _phone = '';
-  final _email = FirebaseAuth.instance.currentUser!.email;
-  final _userId = FirebaseAuth.instance.currentUser!.uid;
+  final String? _email = FirebaseAuth.instance.currentUser?.email;
+  final String? _userId = FirebaseAuth.instance.currentUser?.uid;
 
   @override
   void initState() {
@@ -135,20 +132,22 @@ class _AccountInfoState extends State<AccountInfo> {
     fetchUserInfo();
   }
 
-  fetchUserInfo() async {
-    try {
-      final snapshot = await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(_userId)
-          .get();
-      if (snapshot.exists) {
-        setState(() {
-          _name = snapshot['name'];
-          _phone = snapshot['phone'];
-        });
+  Future<void> fetchUserInfo() async {
+    if (_userId != null) {
+      try {
+        final snapshot = await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(_userId)
+            .get();
+        if (snapshot.exists) {
+          setState(() {
+            _name = snapshot['name'];
+            _phone = snapshot['phone'];
+          });
+        }
+      } on FirebaseException catch (e) {
+        print("Error fetching user info: ${e.message}");
       }
-    } catch (e) {
-      print("Error fetching user info: $e");
     }
   }
 
@@ -177,7 +176,7 @@ class _AccountInfoState extends State<AccountInfo> {
                   "Email Address",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text("$_email"),
+                subtitle: Text(_email ?? ''),
               ),
               const SizedBox(height: 10),
               ListTile(
@@ -201,7 +200,7 @@ class _AccountInfoState extends State<AccountInfo> {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
-                    // deleteUser();  //Uncomment Later
+                    // deleteUser();  // Uncomment Later
                   },
                   child: const Text("Delete Account",
                       style: TextStyle(color: Colors.red)),
@@ -254,8 +253,8 @@ class _AccountInfoState extends State<AccountInfo> {
                   try {
                     await user.delete();
                     print('Account deleted successfully.');
-                  } catch (e) {
-                    print('Failed to delete account: $e');
+                  } on FirebaseException catch (e) {
+                    print('Failed to delete account: ${e.message}');
                   }
                 },
               ),

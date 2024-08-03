@@ -26,7 +26,6 @@ class _HomePageState extends State<HomePage> {
         body: screens[index],
         bottomNavigationBar: NavigationBarTheme(
           data: NavigationBarThemeData(
-            indicatorColor: Colors.grey,
             labelTextStyle: MaterialStateProperty.all(
                 const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
           ),

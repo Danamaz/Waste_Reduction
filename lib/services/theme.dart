@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 
+const Color seedColor = Color(0xFF6200EE);
+
 ThemeData lightMode = ThemeData(
-  brightness: Brightness.light,
-  // colorScheme: const ColorScheme.light().copyWith(
-  //   background: Colors.grey.shade400,
-  //   // primary: Colors.grey.shade300,
-  //   // secondary: Colors.grey.shade200,
-  // ),
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: seedColor,
+    brightness: Brightness.light,
+  ),
+  appBarTheme: AppBarTheme(
+    backgroundColor: Colors.grey[100],
+    foregroundColor: Colors.black,
+  ),
 );
 
 ThemeData darkMode = ThemeData(
-  brightness: Brightness.dark,
-  // colorScheme: const ColorScheme.dark().copyWith(
-  //   background: Colors.grey.shade900,
-  //   // primary: Colors.grey.shade800,
-  //   // secondary: Colors.grey.shade700,
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: seedColor,
+    brightness: Brightness.dark,
+  ),
+  // appBarTheme: AppBarTheme(
+  //   backgroundColor: Colors.grey[800],
+  //   foregroundColor: Colors.white,
   // ),
 );
 

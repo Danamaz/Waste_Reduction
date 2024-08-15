@@ -25,7 +25,6 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.blue,
         toolbarHeight: 60,
       ),
       body: SingleChildScrollView(

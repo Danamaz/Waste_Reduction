@@ -21,12 +21,14 @@ class ItemCard extends StatelessWidget {
       onTap: () {
         daysToExpiry(context);
       },
-      child: Card(
+      child: Card.filled(
         child: Container(
           padding: const EdgeInsets.all(15),
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+          ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -53,6 +55,7 @@ class ItemCard extends StatelessWidget {
                             itemName,
                             style: const TextStyle(
                               fontSize: 20,
+                              color: Colors.black,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
@@ -76,7 +79,8 @@ class ItemCard extends StatelessWidget {
                 itemDescription,
                 style: const TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 10),

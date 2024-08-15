@@ -31,7 +31,6 @@ class _StorePageState extends State<StorePage> {
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500)),
         centerTitle: true,
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.blue,
         toolbarHeight: 60,
       ),
       body: Padding(
@@ -39,16 +38,6 @@ class _StorePageState extends State<StorePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // const Text(
-            //   'Catalog',
-            //   style: TextStyle(
-            //     fontSize: 30,
-            //     fontWeight: FontWeight.w900,
-            //     fontFamily: 'RobotoCondensed-Italic',
-            //     color: Colors.black,
-            //     letterSpacing: 1,
-            //   ),
-            // ),
             searchitem(),
             const SizedBox(height: 20),
             Expanded(

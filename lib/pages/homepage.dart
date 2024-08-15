@@ -25,10 +25,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         body: screens[index],
         bottomNavigationBar: NavigationBarTheme(
-          data: NavigationBarThemeData(
-            labelTextStyle: MaterialStateProperty.all(
-                const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-          ),
+          data: const NavigationBarThemeData(),
           child: NavigationBar(
               height: 70,
               selectedIndex: index,

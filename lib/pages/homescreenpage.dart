@@ -15,7 +15,6 @@ class HomeScreen extends StatelessWidget {
           centerTitle: true,
           automaticallyImplyLeading: false,
           toolbarHeight: 60,
-          backgroundColor: Colors.blue,
         ),
         body: Container(
           margin: const EdgeInsets.all(5),

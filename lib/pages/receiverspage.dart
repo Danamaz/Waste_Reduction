@@ -23,7 +23,6 @@ class _RecipientpageState extends State<Recipientpage> {
           automaticallyImplyLeading: false,
           centerTitle: true,
           toolbarHeight: 60,
-          backgroundColor: Colors.blue,
         ),
         body: StreamBuilder(
             stream: FirebaseFirestore.instance

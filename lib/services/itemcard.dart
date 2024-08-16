@@ -1,5 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:waste_management/services/expiry.dart';
+import 'package:http/http.dart' as http;
 
 class ItemCard extends StatelessWidget {
   const ItemCard({
@@ -91,24 +95,57 @@ class ItemCard extends StatelessWidget {
     );
   }
 
-//expiry Dialog method
+  // expiry Dialog method
   void daysToExpiry(BuildContext context) {
     ExpiryCalculator calculator = ExpiryCalculator(expiryDate: itemExpiryDate);
     final expiryInfo = calculator.expiryStatus();
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Expiry Date Information"),
-            content: Text(expiryInfo),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("cancel"))
-            ],
-          );
-        });
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Expiry Date Information"),
+          content: Text(expiryInfo),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                try {
+                  final imageUrl = itemImage;
+                  final url = Uri.parse(imageUrl);
+                  final response = await http.get(url);
+
+                  if (response.statusCode == 200) {
+                    final bytes = response.bodyBytes;
+
+                    final tempDir = await getTemporaryDirectory();
+                    final filePath = '${tempDir.path}/image.jpg';
+                    final file = File(filePath);
+                    await file.writeAsBytes(bytes);
+
+                    final xFile = XFile(filePath);
+
+                    await Share.shareXFiles(
+                      [xFile],
+                      text: '$itemName\n\n$itemDescription',
+                    );
+                  } else {
+                    print('Failed to download image.');
+                  }
+                } catch (e) {
+                  print('Error during sharing: $e');
+                }
+              },
+              child: const Text("Share"),
+            ),
+            TextButton(onPressed: () {}, child: const Text("Donate")),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

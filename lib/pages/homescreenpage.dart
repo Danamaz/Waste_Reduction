@@ -15,6 +15,7 @@ class HomeScreen extends StatelessWidget {
           centerTitle: true,
           automaticallyImplyLeading: false,
           toolbarHeight: 60,
+          elevation: 4.0,
         ),
         body: Container(
           margin: const EdgeInsets.all(5),
@@ -29,7 +30,6 @@ class HomeScreen extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.italic,
-                    //color: Colors.black,
                   ),
                 ),
                 SizedBox(height: 5),

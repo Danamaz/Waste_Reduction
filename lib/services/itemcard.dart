@@ -125,7 +125,7 @@ class ItemCard extends StatelessWidget {
 
                     await Share.shareXFiles(
                       [xFile],
-                      text: '$itemName\n\n$itemDescription',
+                      text: '$itemName\n\n$itemDescription\n$itemImage',
                     );
                   } else {
                     print('Failed to download image.');

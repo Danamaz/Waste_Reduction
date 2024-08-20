@@ -27,8 +27,10 @@ class _StorePageState extends State<StorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 4,
+        bottomOpacity: 0,
         title: const Text('Products',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500)),
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
         centerTitle: true,
         automaticallyImplyLeading: false,
         toolbarHeight: 60,
@@ -108,12 +110,6 @@ class _StorePageState extends State<StorePage> {
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
           prefixIcon: Icon(Icons.search_outlined),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
           hintText: 'Search',
         ),
       ),

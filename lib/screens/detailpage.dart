@@ -69,8 +69,7 @@ class _DetailsPageState extends State<DetailsPage> {
       decoration: const InputDecoration(
         labelText: 'Name',
         prefixIcon: Icon(Icons.person_outline),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
+        border: OutlineInputBorder(),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -88,8 +87,7 @@ class _DetailsPageState extends State<DetailsPage> {
       decoration: const InputDecoration(
         labelText: 'email address',
         prefixIcon: Icon(Icons.email_outlined),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
+        border: OutlineInputBorder(),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -109,8 +107,7 @@ class _DetailsPageState extends State<DetailsPage> {
       decoration: const InputDecoration(
         labelText: 'phone number',
         prefixIcon: Icon(Icons.phone_outlined),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
+        border: OutlineInputBorder(),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -129,8 +126,7 @@ class _DetailsPageState extends State<DetailsPage> {
       decoration: const InputDecoration(
         labelText: 'Enter location or address',
         prefixIcon: Icon(Icons.location_city_outlined),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.zero),
+        border: OutlineInputBorder(),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {

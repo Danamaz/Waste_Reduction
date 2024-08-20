@@ -16,7 +16,6 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -26,92 +25,95 @@ class _SettingsPageState extends State<SettingsPage> {
         centerTitle: true,
         automaticallyImplyLeading: false,
         toolbarHeight: 60,
+        elevation: 4.0,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              const Padding(padding: EdgeInsets.all(8)),
-              Card(
-                child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AccountInfo(),
-                      ),
-                    );
-                  },
-                  title: const Text('Account'),
-                  leading: const Icon(Icons.person_2_rounded),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                ),
-              ),
-              Card(
-                child: ListTile(
-                  onTap: () {
-                    AwesomeNotifications().createNotification(
-                        content: NotificationContent(
-                            id: 1,
-                            channelKey: "basic_channel",
-                            title: "Hello World",
-                            body:
-                                "Hey you out there, my notification is working now "));
-                  },
-                  title: const Text('Notifications'),
-                  leading: const Icon(Icons.notifications_rounded),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                ),
-              ),
-              Card(
-                child: ListTile(
-                  title: const Text('Dark Mode'),
-                  leading: const Icon(Icons.brightness_6),
-                  trailing: Switch(
-                    value: themeProvider.isDarkMode,
-                    onChanged: (value) {
-                      themeProvider.toggleTheme();
-                    },
+      body: Consumer(
+        builder: (context, UiProvider notifier, child) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+              child: Column(
+                children: [
+                  Card(
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AccountInfo(),
+                          ),
+                        );
+                      },
+                      title: const Text('Account'),
+                      leading: const Icon(Icons.person_2_rounded),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                    ),
                   ),
-                ),
+                  Card(
+                    child: ListTile(
+                      onTap: () {
+                        AwesomeNotifications().createNotification(
+                            content: NotificationContent(
+                                id: 1,
+                                channelKey: "basic_channel",
+                                title: "Hello World",
+                                body:
+                                    "Hey you out there, my notification is working now "));
+                      },
+                      title: const Text('Notifications'),
+                      leading: const Icon(Icons.notifications_rounded),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                    ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      title: const Text('Dark Mode'),
+                      leading: const Icon(Icons.brightness_6),
+                      trailing: Switch(
+                          value: notifier.isDark,
+                          onChanged: (value) => notifier.changeTheme()),
+                    ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      onTap: () {},
+                      title: const Text('About'),
+                      leading: const Icon(Icons.question_mark_rounded),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                    ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      onTap: () {
+                        FirebaseAuth.instance.signOut();
+                        print("User has successfully logged out");
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                              "You have successfully logged out, log in to continue"),
+                        ));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
+                        );
+                      },
+                      title: const Text('Logout'),
+                      leading: const Icon(Icons.logout),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                    ),
+                  ),
+                ],
               ),
-              Card(
-                child: ListTile(
-                  onTap: () {},
-                  title: const Text('About'),
-                  leading: const Icon(Icons.question_mark_rounded),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                ),
-              ),
-              Card(
-                child: ListTile(
-                  onTap: () {
-                    FirebaseAuth.instance.signOut();
-                    print("User has successfully logged out");
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                          "You have successfully logged out, log in to continue"),
-                    ));
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()),
-                    );
-                  },
-                  title: const Text('Logout'),
-                  leading: const Icon(Icons.logout),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
 }
 
+//Account Info Page
 class AccountInfo extends StatefulWidget {
   const AccountInfo({super.key});
 
